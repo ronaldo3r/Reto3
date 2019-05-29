@@ -23,9 +23,9 @@
         android:id="@+id/btn_agregar"/>
 
     <Button
-        android:layout_width="60dp"
+        android:layout_width="wrap_content"
         android:layout_height="60dp"
-        android:text="X"
+        android:text="Cerrar sesión"
         android:layout_alignParentBottom="true"
         android:layout_marginRight="10dp"
         android:layout_marginBottom="10dp"

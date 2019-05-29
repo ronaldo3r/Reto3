@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -106,6 +107,8 @@ public class MainActivity extends AppCompatActivity implements AdapterAmigos.OnI
                 Log.w(">>>>>>",auth.getCurrentUser().getEmail());
                 auth.signOut();
                 mGoogleSignInClient.signOut();
+                LoginManager.getInstance().logOut();
+
                 Intent i = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(i);
                 finish();
