@@ -9,10 +9,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -29,6 +33,8 @@ public class MainActivity extends AppCompatActivity implements AdapterAmigos.OnI
     private Button btn_signout;
     private Button btn_feed;
 
+    private GoogleSignInClient mGoogleSignInClient;
+
     FirebaseDatabase rtdb;
 
 
@@ -41,10 +47,17 @@ public class MainActivity extends AppCompatActivity implements AdapterAmigos.OnI
         Intent ser = new Intent(this, NotificationService.class);
         startService(ser);
 
-
         rtdb = FirebaseDatabase.getInstance();
 
-        //rtdb.getReference().child("alfa").child("beta").child("gamma").setValue("Mi primer valor");
+        // [START config_signin]
+        // Configure Google Sign In
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+        // [END config_signin]
+
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
 
         ActivityCompat.requestPermissions(this, new String[]{
@@ -90,7 +103,9 @@ public class MainActivity extends AppCompatActivity implements AdapterAmigos.OnI
         btn_signout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.w(">>>>>>",auth.getCurrentUser().getEmail());
                 auth.signOut();
+                mGoogleSignInClient.signOut();
                 Intent i = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(i);
                 finish();
